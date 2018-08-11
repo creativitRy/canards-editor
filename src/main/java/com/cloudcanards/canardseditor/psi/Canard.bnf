@@ -1,0 +1,44 @@
+{
+    parserClass="com.cloudcanards.canardseditor.parser.CanardParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="Canard"
+    psiImplClassSuffix="Impl"
+    psiPackage="com.cloudcanards.canardseditor.psi"
+    psiImplPackage="com.cloudcanards.canardseditor.psi.impl"
+
+    elementTypeHolderClass="com.cloudcanards.canardseditor.psi.CanardTypes"
+    elementTypeClass="com.cloudcanards.canardseditor.psi.CanardElementType"
+    tokenTypeClass="com.cloudcanards.canardseditor.psi.CanardTokenType"
+
+    /*tokens = [
+        AT='@'
+        LEFT_PAREN="("
+        RIGHT_PAREN=")"
+
+        CLRF='regexp:[\n]'
+
+        COMMENT='regexp:#[^\n#]+'
+
+        TEXT='regexp:[^\n]+'
+
+        word='regexp:\w+'
+        NAME='regexp:\w+'
+
+        EMPTY='regexp:[^\S\n]*\n'
+    ]*/
+}
+
+canardFile ::= item*
+
+private item ::= (node|COMMENT|EMPTY)
+
+node ::= (text_node)
+
+text_node ::= [speaker] text_body
+
+speaker ::= AT NAME [emotion_handle]
+emotion_handle ::= LEFT_PAREN EMOTION RIGHT_PAREN
+
+text_body ::= (TEXT|SPECIAL_CHAR)+
