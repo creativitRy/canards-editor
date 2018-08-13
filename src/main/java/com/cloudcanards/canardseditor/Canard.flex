@@ -17,7 +17,7 @@ import com.intellij.psi.TokenType;
 
 AT=@
 NAME=[A-Z][^\s(]*
-SPACE=[ \t]
+SPACE=[ \t]+
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f]
 FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
@@ -30,6 +30,7 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 %state AFTER_NAME
 %state ON_EMOTION
 %state ON_TEXT
+%state ON_MULTI_COMMENT
 
 %%
 
@@ -38,10 +39,17 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
           return CanardTypes.AT;
       }
 
-<AFTER_AT> {NAME} {
+<AFTER_AT> {
+    {NAME} {
           yybegin(AFTER_NAME);
           return CanardTypes.NAME;
       }
+
+    . {
+          yybegin(AFTER_NAME);
+          return TokenType.BAD_CHARACTER;
+      }
+}
 
 <AFTER_NAME> \( {
           yybegin(ON_EMOTION);
@@ -89,5 +97,22 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
           return CanardTypes.SPECIAL_CHAR;
       }
 
-    \\
+    \\@ {
+          yybegin(ON_TEXT);
+          return CanardTypes.SPECIAL_CHAR;
+      }
+
+    #\* {
+          yybegin(ON_MULTI_COMMENT);
+          return CanardTypes.COMMENT;
+      }
+
+    .+ {
+          yybegin(ON_TEXT);
+          return CanardTypes.TEXT;
+      }
 }
+
+. {
+          return TokenType.BAD_CHARACTER;
+      }

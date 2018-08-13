@@ -4,6 +4,10 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.2.51'
 }
 
+apply plugin: 'idea'
+apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'java'
+
 group 'com.cloudcanards'
 version '1.0-SNAPSHOT'
 
@@ -11,6 +15,13 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+}
+
+sourceSets.main.java.srcDir 'src/main/gen'
+idea {
+    module {
+        generatedSourceDirs += file('src/main/gen')
+    }
 }
 
 dependencies {

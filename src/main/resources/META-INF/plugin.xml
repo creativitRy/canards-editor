@@ -12,6 +12,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <fileTypeFactory implementation="com.cloudcanards.canardseditor.CanardFileTypeFactory"/>
+        <lang.parserDefinition language="Canard" implementationClass="com.cloudcanards.canardseditor.CanardParserDefinition"/>
     </extensions>
 
     <actions>
