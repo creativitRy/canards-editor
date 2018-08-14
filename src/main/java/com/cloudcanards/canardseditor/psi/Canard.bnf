@@ -11,23 +11,6 @@
     elementTypeHolderClass="com.cloudcanards.canardseditor.psi.CanardTypes"
     elementTypeClass="com.cloudcanards.canardseditor.psi.CanardElementType"
     tokenTypeClass="com.cloudcanards.canardseditor.psi.CanardTokenType"
-
-    /*tokens = [
-        AT='@'
-        LEFT_PAREN="("
-        RIGHT_PAREN=")"
-
-        CLRF='regexp:[\n]'
-
-        COMMENT='regexp:#[^\n#]+'
-
-        TEXT='regexp:[^\n]+'
-
-        word='regexp:\w+'
-        NAME='regexp:\w+'
-
-        EMPTY='regexp:[^\S\n]*\n'
-    ]*/
 }
 
 canardFile ::= item*

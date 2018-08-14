@@ -13,6 +13,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <fileTypeFactory implementation="com.cloudcanards.canardseditor.CanardFileTypeFactory"/>
         <lang.parserDefinition language="Canard" implementationClass="com.cloudcanards.canardseditor.CanardParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Canard" implementationClass="com.cloudcanards.canardseditor.syntaxhighlight.CanardSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="com.cloudcanards.canardseditor.syntaxhighlight.CanardColorSettingsPage"/>
     </extensions>
 
     <actions>

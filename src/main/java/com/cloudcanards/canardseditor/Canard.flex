@@ -17,8 +17,12 @@ import com.intellij.psi.TokenType;
 
 AT=@
 NAME=[A-Z][^\s(]*
-SPACE=[ \t]+
+SINGLE_SPACE=[ \t]
+SPACE={SINGLE_SPACE}+
+OPTIONAL_SPACE={SINGLE_SPACE}*
+COMMENT=#.*
 CRLF=\R
+
 WHITE_SPACE=[\ \n\t\f]
 FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
 VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
@@ -30,14 +34,29 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 %state AFTER_NAME
 %state ON_EMOTION
 %state ON_TEXT
-%state ON_MULTI_COMMENT
 
 %%
 
-<YYINITIAL> {AT} {
+<YYINITIAL> {
+     {AT} {
           yybegin(AFTER_AT);
           return CanardTypes.AT;
       }
+
+     {COMMENT} {
+               yybegin(YYINITIAL);
+               return CanardTypes.COMMENT;
+       }
+
+      {SPACE} {
+          yybegin(YYINITIAL);
+          return TokenType.WHITE_SPACE;
+      }
+
+      . {
+          yybegin(ON_TEXT);
+      }
+}
 
 <AFTER_AT> {
     {NAME} {
@@ -102,17 +121,33 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
           return CanardTypes.SPECIAL_CHAR;
       }
 
-    #\* {
-          yybegin(ON_MULTI_COMMENT);
-          return CanardTypes.COMMENT;
+    \\{CRLF} {
+          yybegin(ON_TEXT);
+          return CanardTypes.SPECIAL_CHAR;
       }
 
     .+ {
           yybegin(ON_TEXT);
           return CanardTypes.TEXT;
       }
+
+    {CRLF}+ {
+          yybegin(YYINITIAL);
+          return TokenType.WHITE_SPACE;
+      }
 }
 
+{COMMENT} {
+          yybegin(YYINITIAL);
+          return CanardTypes.COMMENT;
+      }
+
+\s+ {
+          yybegin(YYINITIAL);
+          return TokenType.WHITE_SPACE;
+      }
+
 . {
+          yybegin(YYINITIAL);
           return TokenType.BAD_CHARACTER;
       }
