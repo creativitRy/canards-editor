@@ -17,11 +17,18 @@ canardFile ::= item*
 
 private item ::= (node|COMMENT|EMPTY)
 
-node ::= (text_node)
+node ::= (text_node|label|goto_node)
 
+// text
 text_node ::= [speaker] text_body
 
 speaker ::= AT NAME [emotion_handle]
 emotion_handle ::= EMOTION_LEFT_PAREN EMOTION EMOTION_RIGHT_PAREN
 
 text_body ::= (TEXT|SPECIAL_CHAR)+
+
+// label
+label ::= AT LABEL_NAME
+
+// goto
+goto_node ::= AT GOTO LABEL_NAME

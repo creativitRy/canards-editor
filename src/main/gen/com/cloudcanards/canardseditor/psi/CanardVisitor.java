@@ -11,6 +11,14 @@ public class CanardVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitGotoNode(@NotNull CanardGotoNode o) {
+    visitPsiElement(o);
+  }
+
+  public void visitLabel(@NotNull CanardLabel o) {
+    visitPsiElement(o);
+  }
+
   public void visitNode(@NotNull CanardNode o) {
     visitPsiElement(o);
   }

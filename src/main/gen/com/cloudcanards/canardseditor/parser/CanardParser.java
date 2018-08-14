@@ -26,6 +26,12 @@ public class CanardParser implements PsiParser, LightPsiParser {
     if (t == EMOTION_HANDLE) {
       r = emotion_handle(b, 0);
     }
+    else if (t == GOTO_NODE) {
+      r = goto_node(b, 0);
+    }
+    else if (t == LABEL) {
+      r = label(b, 0);
+    }
     else if (t == NODE) {
       r = node(b, 0);
     }
@@ -73,6 +79,18 @@ public class CanardParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // AT GOTO LABEL_NAME
+  public static boolean goto_node(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "goto_node")) return false;
+    if (!nextTokenIs(b, AT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, AT, GOTO, LABEL_NAME);
+    exit_section_(b, m, GOTO_NODE, r);
+    return r;
+  }
+
+  /* ********************************************************** */
   // node|COMMENT|EMPTY
   static boolean item(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item")) return false;
@@ -84,12 +102,26 @@ public class CanardParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (text_node)
+  // AT LABEL_NAME
+  public static boolean label(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "label")) return false;
+    if (!nextTokenIs(b, AT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokens(b, 0, AT, LABEL_NAME);
+    exit_section_(b, m, LABEL, r);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // text_node|label|goto_node
   public static boolean node(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "node")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, NODE, "<node>");
     r = text_node(b, l + 1);
+    if (!r) r = label(b, l + 1);
+    if (!r) r = goto_node(b, l + 1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

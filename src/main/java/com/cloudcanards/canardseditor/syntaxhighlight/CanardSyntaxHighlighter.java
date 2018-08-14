@@ -58,6 +58,10 @@ public class CanardSyntaxHighlighter extends SyntaxHighlighterBase {
             return EMPTY;
         if (tokenType.equals(CanardTypes.AT))
             return AT;
+        if (tokenType.equals(CanardTypes.LABEL_NAME))
+            return LABEL;
+        if (tokenType.equals(CanardTypes.GOTO))
+            return KEYWORD;
         if (tokenType.equals(CanardTypes.NAME))
             return NAME;
         if (tokenType.equals(CanardTypes.EMOTION)

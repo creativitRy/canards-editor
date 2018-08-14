@@ -5,15 +5,6 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface CanardNode extends PsiElement {
-
-  @Nullable
-  CanardGotoNode getGotoNode();
-
-  @Nullable
-  CanardLabel getLabel();
-
-  @Nullable
-  CanardTextNode getTextNode();
+public interface CanardLabel extends PsiElement {
 
 }

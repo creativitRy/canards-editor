@@ -11,37 +11,19 @@ import static com.cloudcanards.canardseditor.psi.CanardTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.cloudcanards.canardseditor.psi.*;
 
-public class CanardNodeImpl extends ASTWrapperPsiElement implements CanardNode {
+public class CanardLabelImpl extends ASTWrapperPsiElement implements CanardLabel {
 
-  public CanardNodeImpl(@NotNull ASTNode node) {
+  public CanardLabelImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull CanardVisitor visitor) {
-    visitor.visitNode(this);
+    visitor.visitLabel(this);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof CanardVisitor) accept((CanardVisitor)visitor);
     else super.accept(visitor);
-  }
-
-  @Override
-  @Nullable
-  public CanardGotoNode getGotoNode() {
-    return findChildByClass(CanardGotoNode.class);
-  }
-
-  @Override
-  @Nullable
-  public CanardLabel getLabel() {
-    return findChildByClass(CanardLabel.class);
-  }
-
-  @Override
-  @Nullable
-  public CanardTextNode getTextNode() {
-    return findChildByClass(CanardTextNode.class);
   }
 
 }
