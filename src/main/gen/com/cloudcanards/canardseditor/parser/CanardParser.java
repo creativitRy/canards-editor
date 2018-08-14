@@ -61,13 +61,13 @@ public class CanardParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LEFT_PAREN EMOTION RIGHT_PAREN
+  // EMOTION_LEFT_PAREN EMOTION EMOTION_RIGHT_PAREN
   public static boolean emotion_handle(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "emotion_handle")) return false;
-    if (!nextTokenIs(b, LEFT_PAREN)) return false;
+    if (!nextTokenIs(b, EMOTION_LEFT_PAREN)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, LEFT_PAREN, EMOTION, RIGHT_PAREN);
+    r = consumeTokens(b, 0, EMOTION_LEFT_PAREN, EMOTION, EMOTION_RIGHT_PAREN);
     exit_section_(b, m, EMOTION_HANDLE, r);
     return r;
   }

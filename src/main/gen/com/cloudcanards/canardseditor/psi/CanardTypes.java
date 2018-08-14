@@ -17,10 +17,10 @@ public interface CanardTypes {
   IElementType AT = new CanardTokenType("AT");
   IElementType COMMENT = new CanardTokenType("COMMENT");
   IElementType EMOTION = new CanardTokenType("EMOTION");
+  IElementType EMOTION_LEFT_PAREN = new CanardTokenType("EMOTION_LEFT_PAREN");
+  IElementType EMOTION_RIGHT_PAREN = new CanardTokenType("EMOTION_RIGHT_PAREN");
   IElementType EMPTY = new CanardTokenType("EMPTY");
-  IElementType LEFT_PAREN = new CanardTokenType("LEFT_PAREN");
   IElementType NAME = new CanardTokenType("NAME");
-  IElementType RIGHT_PAREN = new CanardTokenType("RIGHT_PAREN");
   IElementType SPECIAL_CHAR = new CanardTokenType("SPECIAL_CHAR");
   IElementType TEXT = new CanardTokenType("TEXT");
 

@@ -22,6 +22,6 @@ node ::= (text_node)
 text_node ::= [speaker] text_body
 
 speaker ::= AT NAME [emotion_handle]
-emotion_handle ::= LEFT_PAREN EMOTION RIGHT_PAREN
+emotion_handle ::= EMOTION_LEFT_PAREN EMOTION EMOTION_RIGHT_PAREN
 
 text_body ::= (TEXT|SPECIAL_CHAR)+

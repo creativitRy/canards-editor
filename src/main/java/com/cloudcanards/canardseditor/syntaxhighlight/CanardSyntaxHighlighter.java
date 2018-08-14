@@ -41,6 +41,7 @@ public class CanardSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey[] CHOICE = create("CANARD_CHOICE", DefaultLanguageHighlighterColors.STRING);
     public static final TextAttributesKey[] EXIT = create("CANARD_EXIT", KEYWORD[0]);
 
+    public static final TextAttributesKey[] COMMENT = create("CANARD_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
     private static final TextAttributesKey[] BAD = create("CANARD_BAD", HighlighterColors.BAD_CHARACTER);
     private static final TextAttributesKey[] EMPTY = new TextAttributesKey[0];
 
@@ -59,10 +60,15 @@ public class CanardSyntaxHighlighter extends SyntaxHighlighterBase {
             return AT;
         if (tokenType.equals(CanardTypes.NAME))
             return NAME;
-        if (tokenType.equals(CanardTypes.EMOTION_HANDLE))
+        if (tokenType.equals(CanardTypes.EMOTION)
+                || tokenType.equals(CanardTypes.EMOTION_LEFT_PAREN) || tokenType.equals(CanardTypes.EMOTION_RIGHT_PAREN))
             return EMOTION;
         if (tokenType.equals(CanardTypes.TEXT))
             return TEXT;
+        if (tokenType.equals(CanardTypes.SPECIAL_CHAR))
+            return TEXT_ESCAPED;
+        if (tokenType.equals(CanardTypes.COMMENT))
+            return COMMENT;
         if (tokenType.equals(TokenType.BAD_CHARACTER))
             return BAD;
         return EMPTY;
@@ -70,8 +76,7 @@ public class CanardSyntaxHighlighter extends SyntaxHighlighterBase {
 
     @NotNull
     @Contract("_, _ -> new")
-    private static TextAttributesKey[] create(String name, TextAttributesKey fallback)
-    {
+    private static TextAttributesKey[] create(String name, TextAttributesKey fallback) {
         return new TextAttributesKey[]{TextAttributesKey.createTextAttributesKey(name, fallback)};
     }
 }

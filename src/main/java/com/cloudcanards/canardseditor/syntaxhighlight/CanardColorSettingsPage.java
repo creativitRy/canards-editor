@@ -19,6 +19,8 @@ import java.util.Map;
  */
 public class CanardColorSettingsPage implements ColorSettingsPage {
     private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
+            new AttributesDescriptor("Comment", CanardSyntaxHighlighter.COMMENT[0]),
+
             new AttributesDescriptor("Starting At", CanardSyntaxHighlighter.AT[0]),
             new AttributesDescriptor("Speaker Name", CanardSyntaxHighlighter.NAME[0]),
             new AttributesDescriptor("Speaker Emotion", CanardSyntaxHighlighter.EMOTION[0]),

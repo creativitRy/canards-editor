@@ -16,19 +16,12 @@ import com.intellij.psi.TokenType;
 %eof}
 
 AT=@
-NAME=[A-Z][^\s(]*
+NAME=[A-Z][A-Za-z0-9]*
 SINGLE_SPACE=[ \t]
-SPACE={SINGLE_SPACE}+
+SPACES={SINGLE_SPACE}+
 OPTIONAL_SPACE={SINGLE_SPACE}*
 COMMENT=#.*
 CRLF=\R
-
-WHITE_SPACE=[\ \n\t\f]
-FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
-VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
-END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
-SEPARATOR=[:=]
-KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 
 %state AFTER_AT
 %state AFTER_NAME
@@ -38,6 +31,11 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 %%
 
 <YYINITIAL> {
+      \s+ {
+          yybegin(YYINITIAL);
+          return TokenType.WHITE_SPACE;
+      }
+
      {AT} {
           yybegin(AFTER_AT);
           return CanardTypes.AT;
@@ -47,15 +45,6 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
                yybegin(YYINITIAL);
                return CanardTypes.COMMENT;
        }
-
-      {SPACE} {
-          yybegin(YYINITIAL);
-          return TokenType.WHITE_SPACE;
-      }
-
-      . {
-          yybegin(ON_TEXT);
-      }
 }
 
 <AFTER_AT> {
@@ -68,44 +57,55 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
           yybegin(AFTER_NAME);
           return TokenType.BAD_CHARACTER;
       }
+
+    {CRLF} {
+          yybegin(YYINITIAL);
+          return TokenType.BAD_CHARACTER;
+      }
 }
 
-<AFTER_NAME> \( {
-          yybegin(ON_EMOTION);
-          return CanardTypes.LEFT_PAREN;
-      }
+<AFTER_NAME> {
+    \( {
+              yybegin(ON_EMOTION);
+              return CanardTypes.EMOTION_LEFT_PAREN;
+          }
 
-<ON_EMOTION> \w+ {
+    {COMMENT} {
+              yybegin(YYINITIAL);
+              return TokenType.BAD_CHARACTER;
+          }
+
+    {SPACES} {
+                yybegin(ON_TEXT);
+                return TokenType.WHITE_SPACE;
+            }
+
+    {CRLF} {
+                    yybegin(YYINITIAL);
+                    return TokenType.BAD_CHARACTER;
+                }
+}
+
+<ON_EMOTION> {
+    \w+ {
           yybegin(ON_EMOTION);
           return CanardTypes.EMOTION;
       }
 
-<ON_EMOTION> \) {
-          yybegin(ON_TEXT);
-          return CanardTypes.RIGHT_PAREN;
-      }
+      \) {
+            yybegin(ON_TEXT);
+            return CanardTypes.EMOTION_RIGHT_PAREN;
+        }
 
-<ON_EMOTION> {SPACE} {
-          yybegin(ON_TEXT);
-          return TokenType.WHITE_SPACE;
-      }
+    {COMMENT} | // use action below
 
-<AFTER_NAME> {SPACE} {
-          yybegin(ON_TEXT);
-          return TokenType.WHITE_SPACE;
-      }
-
-<ON_EMOTION> . {
-          yybegin(ON_TEXT);
+    \s+ {
+          yybegin(YYINITIAL);
           return TokenType.BAD_CHARACTER;
       }
+}
 
-<AFTER_NAME> . {
-          yybegin(ON_TEXT);
-          return TokenType.BAD_CHARACTER;
-      }
-
-<ON_TEXT> {
+<ON_TEXT, YYINITIAL> {
     \\\\ {
           yybegin(ON_TEXT);
           return CanardTypes.SPECIAL_CHAR;
@@ -126,7 +126,7 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
           return CanardTypes.SPECIAL_CHAR;
       }
 
-    .+ {
+    [^@\n\r\\#]+ {
           yybegin(ON_TEXT);
           return CanardTypes.TEXT;
       }
@@ -147,7 +147,7 @@ KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
           return TokenType.WHITE_SPACE;
       }
 
-. {
+[^] {
           yybegin(YYINITIAL);
           return TokenType.BAD_CHARACTER;
       }
