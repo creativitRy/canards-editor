@@ -59,7 +59,7 @@ public class CanardColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDemoText() {
-        return "@Yanna here is text\n" +
+        return "@Yanna here is some text\n" +
                 "Here is more with \\@ escaped text (even invalid \\ones too)\\\n" +
                 "And line breaks.\n" +
                 "# here are comments\n" +
