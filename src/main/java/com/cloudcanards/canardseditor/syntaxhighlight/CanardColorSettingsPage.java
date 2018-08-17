@@ -77,7 +77,6 @@ public class CanardColorSettingsPage implements ColorSettingsPage {
                 "\tWow\n" +
                 "Option 2\n" +
                 "\tMore\n" +
-                "\t@break\n" +
                 "Option 3\n" +
                 "\toops\n" +
                 "\t@exit\n" +
